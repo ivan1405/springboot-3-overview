@@ -16,3 +16,23 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
   jackson:
     default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    tags:
+      application: springboot-3
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    com.example.app: DEBUG

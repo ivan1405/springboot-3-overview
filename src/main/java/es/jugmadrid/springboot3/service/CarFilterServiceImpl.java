@@ -9,6 +9,7 @@ import es.jugmadrid.springboot3.exception.ServiceException;
 import es.jugmadrid.springboot3.mapper.CarMapper;
 import es.jugmadrid.springboot3.model.CarDto;
 import es.jugmadrid.springboot3.model.CarsPageResponse;
+import io.micrometer.observation.annotation.Observed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,6 +30,7 @@ public class CarFilterServiceImpl implements CarFilterService {
         this.carMapper = carMapper;
     }
 
+    @Observed(name = "get.cars", contextualName = "get-list-of-cars")
     @Override
     public CarsPageResponse<CarDto> searchCars(CarsFilter filter, int page, int size) {
         Specification<Car> spec = CarSpec.filterBy(filter);
@@ -36,6 +38,7 @@ public class CarFilterServiceImpl implements CarFilterService {
         return carMapper.toCarsPageResponse(pageResult);
     }
 
+    @Observed(name = "get.car", contextualName = "get-car-by-id")
     @Override
     public CarDto searchCar(Integer carId) {
         Car car = carRepository.findById(carId)
@@ -43,6 +46,7 @@ public class CarFilterServiceImpl implements CarFilterService {
         return carMapper.toCarDto(car);
     }
 
+    @Observed(name = "create.car", contextualName = "create-new-car")
     @Override
     public CarDto createCar(CreateCarRequest createCarRequest) {
         Car car = carMapper.toCarEntity(createCarRequest);
