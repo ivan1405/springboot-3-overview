@@ -10,7 +10,7 @@ spring:
     username: postgres
     password: admin
   jpa:
-    show-sql: true
+    show-sql: false
     open-in-view: on
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -21,7 +21,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: health, info, prometheus
+  tracing:
+    sampling:
+      probability: 1.0
   metrics:
     tags:
       application: springboot-3
@@ -33,6 +36,4 @@ management:
 
 logging:
   pattern:
-    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
-  level:
-    com.example.app: DEBUG
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
