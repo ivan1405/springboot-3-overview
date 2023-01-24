@@ -5,27 +5,31 @@ services:
     container_name: app-jvm
     image: ivanklp/image-jvm
     environment:
+      - SPRING_APPLICATION_NAME=app-jvm
       - SPRING_DATASOURCE_URL=jdbc:postgresql://jugmadrid-db:5432/jug-madrid
-      - SPRING_LIQUIBASE_ENABLED=false
+      - SPRING_LIQUIBASE_ENABLED=true
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411/api/v2/spans
-      - MANAGEMENT_METRICS_TAGS_APPLICATION=jvm
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-jvm
     ports:
       - "8080:8080"
     depends_on:
       - db
+      - loki
   app-native:
     container_name: app-native
     image: ivanklp/image-native
     environment:
+      - SPRING_APPLICATION_NAME=app-native
       - SPRING_DATASOURCE_URL=jdbc:postgresql://jugmadrid-db:5432/jug-madrid
-      #- SPRING_LIQUIBASE_ENABLED=false
+      - SPRING_LIQUIBASE_ENABLED=false
       - SERVER_PORT=8081
       - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411/api/v2/spans
-      - MANAGEMENT_METRICS_TAGS_APPLICATION=native
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=app-native
     ports:
       - "8081:8081"
     depends_on:
       - db
+      - loki
   db:
     container_name: jugmadrid-db
     image: postgres:15.1
