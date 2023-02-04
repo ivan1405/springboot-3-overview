@@ -17,6 +17,10 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+springdoc:
+  api-docs:
+    path: swagger-ui
+
 management:
   endpoints:
     web:
