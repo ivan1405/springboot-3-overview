@@ -18,14 +18,13 @@ spring:
     default-property-inclusion: non_null
 
 springdoc:
-  api-docs:
-    path: swagger-ui
+  enable-native-support: true
 
 management:
   endpoints:
     web:
       exposure:
-        include: health, info, prometheus
+        include: prometheus
   endpoint:
     loggers:
       enabled: false
